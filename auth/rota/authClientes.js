@@ -58,21 +58,21 @@ authRoutesClientes.post("/login", async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 86400000,
       sameSite: "Strict"
     });
 
     res.cookie("id", usuario.idclientes, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,
     });
 
     res.cookie("userType", 'Cliente', {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,

@@ -44,15 +44,27 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 import cors from 'cors';
 
-const app = express(); 
+const app = express();
 
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:9000',
+    'https://almsfit.dev.vilhena.ifro.edu.br'
+];
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://almsfit.dev.vilhena.ifro.edu.br'],
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true); // Permite
+        } else {
+            callback(new Error('Not allowed by CORS')); // Bloqueia
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
 
 
 app.use(express.json());
