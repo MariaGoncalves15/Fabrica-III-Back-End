@@ -8,7 +8,7 @@ export async function cadastrarCliente(dados) {
 	try {
 		await conexao.beginTransaction();
 
-		if (!dados?.endereco?.cep || !dados.nome || !dados.cpf) {
+		if (!dados?.endereco?.cep || !dados.nome || !dados.cpf || !dados.senha) {
 			throw new Error("Dados obrigatórios ausentes.");
 		}
 
@@ -29,8 +29,8 @@ export async function cadastrarCliente(dados) {
 				nome, cpf, dataDeNascimento,
 				email, telefone, contatoDeEmergencia,
 				peso, altura, sexo,
-				objetivo, fotoPerfil, endereco_idendereco
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				objetivo, fotoPerfil, endereco_idendereco, senha
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			[
 				dados.nome ?? null,
 				dados.cpf ?? null,
@@ -43,7 +43,8 @@ export async function cadastrarCliente(dados) {
 				dados.sexo ?? null,
 				dados.objetivo ?? null,
 				dados.fotoPerfil ?? null,
-				enderecoId
+				enderecoId,
+				dados.senha ?? null,
 			]
 		);
 

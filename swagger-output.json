@@ -17,6 +17,14 @@
   ],
   "tags": [
     {
+      "name": "Autenticação - Cliente",
+      "description": "Operações relacionadas à autenticação dos clientes"
+    },
+    {
+      "name": "Autenticação - Funcionário",
+      "description": "Operações relacionadas à autenticação dos funcionários"
+    },
+    {
       "name": "Frequência",
       "description": "Operações relacionadas à frequência dos clientes"
     },
@@ -4973,6 +4981,9 @@
                   },
                   "objetivo": {
                     "example": "any"
+                  },
+                  "senha": {
+                    "example": "any"
                   }
                 }
               }
@@ -5516,6 +5527,9 @@
                     "example": "any"
                   },
                   "idendereco": {
+                    "example": "any"
+                  },
+                  "senha": {
                     "example": "any"
                   }
                 }
@@ -7495,6 +7509,358 @@
                     "mensagem": {
                       "type": "string",
                       "example": "Erro ao deletar exercício"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/cliente/login": {
+      "post": {
+        "tags": [
+          "Autenticação - Cliente"
+        ],
+        "description": "Realiza o login do cliente e retorna cookies com token e dados do usuário.",
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login realizado com sucesso"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login realizado com sucesso"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário ou senha incorretos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou senha incorretos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou senha incorretos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro no servidor durante o login.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro no servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro no servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "cliente@email.com"
+                  },
+                  "senha": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                },
+                "required": [
+                  "email",
+                  "senha"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/cliente/logout": {
+      "post": {
+        "tags": [
+          "Autenticação - Cliente"
+        ],
+        "description": "Realiza o logout do cliente, removendo os cookies de autenticação.",
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Logout realizado com sucesso."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Logout realizado com sucesso."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/funcionario/login": {
+      "post": {
+        "tags": [
+          "Autenticação - Funcionário"
+        ],
+        "description": "Realiza o login de um funcionário e retorna cookies com token e dados do usuário.",
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login realizado com sucesso"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login realizado com sucesso"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário ou senha incorretos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou senha incorretos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou senha incorretos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro no servidor durante o login.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro no servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro no servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "funcionario@email.com"
+                  },
+                  "senha": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                },
+                "required": [
+                  "email",
+                  "senha"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/funcionario/logout": {
+      "post": {
+        "tags": [
+          "Autenticação - Funcionário"
+        ],
+        "description": "Realiza o logout do funcionário, removendo os cookies de autenticação.",
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Logout realizado com sucesso."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Logout realizado com sucesso."
                     }
                   },
                   "xml": {

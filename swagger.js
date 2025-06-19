@@ -18,6 +18,14 @@ const doc = {
   ],
   tags: [
     {
+      name: 'Autenticação - Cliente',
+      description: 'Operações relacionadas à autenticação dos clientes',
+    },
+    {
+      name: 'Autenticação - Funcionário',
+      description: 'Operações relacionadas à autenticação dos funcionários',
+    },
+    {
       name: 'Frequência',
       description: 'Operações relacionadas à frequência dos clientes',
     },
@@ -30,8 +38,8 @@ const doc = {
       description: 'Operações relacionadas ao endereço dos clientes e funcionários',
     },
     {
-    name: 'Funcionários',
-    description: 'Operações relacionadas aos dados dos funcionários',
+      name: 'Funcionários',
+      description: 'Operações relacionadas aos dados dos funcionários',
     },
     {
       name: 'Cliente',

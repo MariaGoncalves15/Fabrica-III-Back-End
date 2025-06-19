@@ -24,7 +24,8 @@ export async function atualizarCliente(cliente) {
 			cep,
 			numeroCasa,
 			complemento
-		}
+		},
+		senha
 	} = cliente;
 
 	const conexao = await pool.getConnection();
@@ -35,14 +36,14 @@ export async function atualizarCliente(cliente) {
 			UPDATE clientes SET
 				nome = ?, cpf = ?, dataDeNascimento = ?, email = ?,
 				telefone = ?, contatoDeEmergencia = ?, peso = ?, altura = ?,
-				sexo = ?, objetivo = ?
+				sexo = ?, objetivo = ?, senha = ?
 			WHERE idclientes = ?
 		`;
 
 		const clienteParams = [
 			nome, cpf, dataDeNascimento, email,
 			telefone, contatoDeEmergencia, peso, altura,
-			sexo, objetivo, idclientes
+			sexo, objetivo, senha, idclientes
 		];
 
 		await executaQuery(conexao, queryCliente, clienteParams);
@@ -89,7 +90,7 @@ export async function atualizarClienteParcial(idclientes, campos) {
 		// Atualizar cliente
 		const camposValidosCliente = [
 			'nome', 'cpf', 'dataDeNascimento', 'email', 'telefone',
-			'contatoDeEmergencia', 'peso', 'altura', 'sexo', 'objetivo', 'fotoPerfil'
+			'contatoDeEmergencia', 'peso', 'altura', 'sexo', 'objetivo', 'fotoPerfil', 'senha'
 		];
 
 		const camposCliente = Object.entries(campos)

@@ -236,7 +236,7 @@ routerCliente.post('/', upload.fields([
   const {
 	nome, cpf, dataDeNascimento, email, telefone,
 	contatoDeEmergencia, cep, numeroCasa, complemento,
-	peso, altura, sexo,objetivo,
+	peso, altura, sexo, objetivo, senha
   } = req.body;
 
   const fotoPerfilBuffer = req.files?.fotoPerfil?.[0]?.buffer;
@@ -248,7 +248,7 @@ routerCliente.post('/', upload.fields([
 	  cep,
 	  numeroCasa,
 	  complemento
-	},
+	}, senha
   };
 
   try {
@@ -377,7 +377,7 @@ routerCliente.put('/:id', upload.none(), async (req, res) => {
 	nome, cpf, dataDeNascimento, email, telefone, contatoDeEmergencia, 
 	cep, numeroCasa, complemento, peso,
 	altura, sexo, objetivo,
-	idendereco,
+	idendereco, senha
   } = req.body;
 
   const dados = {
@@ -389,7 +389,7 @@ routerCliente.put('/:id', upload.none(), async (req, res) => {
 	  cep,
 	  numeroCasa,
 	  complemento
-	},
+	}, senha
   };
 
   try {

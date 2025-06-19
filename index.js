@@ -50,7 +50,8 @@ const app = express();
 app.use(cors({
     origin: ['http://localhost:3000', 'https://almsfit.dev.vilhena.ifro.edu.br'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
 
@@ -70,6 +71,8 @@ import routerMarca from './anne/rotas/marca.js';
 import routerCliente from './sofia/rotas/cliente.js';
 import routerEquipamentos from './anne/rotas/equipamento.js';
 import routerExercicios from './luz/rotas/exercicios.js';
+import authRoutesClientes from './auth/rota/authClientes.js';
+import authRoutesFuncionarios from './auth/rota/authFuncionario.js';
 
 
 app.use('/funcionarios', routerFuncionario);
@@ -80,6 +83,8 @@ app.use('/marca', routerMarca);
 app.use('/cliente', routerCliente);
 app.use('/equipamentos', routerEquipamentos);
 app.use('/exercicios', routerExercicios);
+app.use('/auth/cliente', authRoutesClientes)
+app.use('/auth/funcionario', authRoutesFuncionarios)
 
 
 app.listen(9000, () => {
