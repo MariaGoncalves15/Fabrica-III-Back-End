@@ -4,6 +4,7 @@ function dataValida(dataStr) {
 }
 
 export function validarCliente(dados) {
+  console.log("Validando telefoneDeEmergencia:", dados.telefoneDeEmergencia);
   const erros = [];
 
   if (!dados.nome || dados.nome.trim().length < 3) {
@@ -32,16 +33,12 @@ export function validarCliente(dados) {
     erros.push("Telefone é obrigatório.");
   }
 
-  if (!dados.endereco?.cep) {
-    erros.push("CEP é obrigatório.");
+  if (!dados.telefoneDeEmergencia) {
+  erros.push("Telefone de emergência é obrigatório.");
   }
 
-  if (!dados.endereco?.numeroCasa) {
-    erros.push("Número da casa é obrigatório.");
-  }
-
-  if (!dados.formacao?.formacao) {
-    erros.push("Formação é obrigatória.");
+  if (!dados.restricoesMedicas || dados.restricoesMedicas.trim().length === 0) {
+    erros.push("Restrições médicas são obrigatórias. Caso não tenha, escreva 'Nenhuma'.");
   }
 
   return erros;
@@ -70,20 +67,12 @@ export function validarAtualizacaoCliente(dados = {}) {
     erros.push("Email deve ser válido.");
   }
 
-  if (dados.telefone && typeof dados.telefone !== 'string') {
-    erros.push("Telefone deve ser uma string.");
+  if (!dados.telefoneDeEmergencia) {
+    erros.push("Telefone de emergência é obrigatório.");
   }
 
-  if (dados.endereco?.cep && typeof dados.endereco.cep !== 'string') {
-    erros.push("CEP deve ser uma string.");
-  }
-
-  if (dados.endereco?.numeroCasa && typeof dados.endereco.numeroCasa !== 'string') {
-    erros.push("Número da casa deve ser uma string.");
-  }
-
-  if (dados.formacao?.formacao && typeof dados.formacao.formacao !== 'string') {
-    erros.push("Formação deve ser uma string.");
+  if (!dados.restricoesMedicas) {
+    erros.push("Restrições médicas são obrigatórias. Caso não tenha, escreva 'Nenhuma'.");
   }
 
   return erros;

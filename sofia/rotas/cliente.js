@@ -168,13 +168,19 @@ routerCliente.get('/:id/fotoPerfil', async (req, res) => {
   }
 });
 
+
 routerCliente.post('/', upload.fields([
   { name: 'fotoPerfil', maxCount: 1 }
 ]), async (req, res) => {
+  console.log("BODY COMPLETO:", req.body);
+
   const {
     nome, senha, cpf, dataDeNascimento, email, telefone,
-    cep, numeroCasa, complemento, peso, altura, sexo, objetivo
+    telefoneDeEmergencia, restricoesMedicas,
+    cep, numeroCasa, complemento,
+    peso, altura, sexo, objetivo
   } = req.body;
+
   const fotoPerfilBuffer = req.files?.fotoPerfil?.[0]?.buffer;
 
   const dados = {
@@ -184,6 +190,8 @@ routerCliente.post('/', upload.fields([
     dataDeNascimento,
     email,
     telefone,
+    telefoneDeEmergencia,
+    restricoesMedicas,
     fotoPerfil: fotoPerfilBuffer,
     peso,
     altura,
@@ -197,12 +205,15 @@ routerCliente.post('/', upload.fields([
   };
 
   const erros = validarCliente(dados);
+
   if (erros.length > 0) {
+    console.log("Erros de validação:", erros);
     return res.status(400).json({ mensagem: "Erro de validação", erros });
   }
 
   try {
     const resultado = await cadastrarCliente(dados);
+    console.log("Cliente cadastrado com sucesso."); // confirma cadastro no servidor
     res.status(201).json({
       mensagem: 'Cliente cadastrado com sucesso',
       id: resultado.insertId
@@ -212,6 +223,7 @@ routerCliente.post('/', upload.fields([
     res.status(500).json({ erro: 'Erro ao cadastrar cliente' });
   }
 });
+
 
 routerCliente.delete('/:id', async (req, res) => {
   const id = req.params.id;
