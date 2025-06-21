@@ -3,13 +3,12 @@ import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const routerCliente = express.Router();
-
+import { cadastrarCliente } from '../servico/adicionarJson.js';
 import {
   retornaClientes,
   retornaClientesPorNome
 } from '../servico/buscar.js';
 
-import { cadastrarCliente } from '../servico/adicionar.js';
 import { deletarClientePorId } from '../servico/deletar.js';
 import {
   atualizarCliente,

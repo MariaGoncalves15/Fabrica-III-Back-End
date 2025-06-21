@@ -1,3 +1,5 @@
+import pool from '../../conexao.js';
+
 export async function cadastrarCliente(dados) {
   const conexao = await pool.getConnection();
   console.log("Dados recebidos para cadastro:", dados);
@@ -5,22 +7,32 @@ export async function cadastrarCliente(dados) {
   try {
     await conexao.beginTransaction();
 
-    if (!dados?.endereco?.cep || !dados.nome || !dados.cpf || !dados.senha) {
+    // Validação de campos obrigatórios
+    if (!dados.nome || !dados.cpf || !dados.senha) {
       throw new Error("Dados obrigatórios ausentes.");
     }
 
-    const [resultadoEndereco] = await conexao.execute(
-      `INSERT INTO endereco (cep, numeroCasa, complemento)
-       VALUES (?, ?, ?)`,
-      [
-        dados.endereco.cep ?? null,
-        dados.endereco.numeroCasa ?? null,
-        dados.endereco.complemento ?? null
-      ]
-    );
+    // Verifica se algum campo de endereço foi enviado
+    let enderecoId = null;
+    if (dados.endereco && (dados.endereco.cep || dados.endereco.numeroCasa || dados.endereco.complemento)) {
+      const [resultadoEndereco] = await conexao.execute(
+        `INSERT INTO endereco (cep, numeroCasa, complemento)
+         VALUES (?, ?, ?)`,
+        [
+          dados.endereco.cep ?? null,
+          dados.endereco.numeroCasa ?? null,
+          dados.endereco.complemento ?? null
+        ]
+      );
+      enderecoId = resultadoEndereco.insertId;
+    }
 
-    const enderecoId = resultadoEndereco.insertId;
+    // Trata telefoneDeEmergencia para aceitar nulo se não informado ou vazio
+    const telefoneEmergenciaTratado = dados.telefoneDeEmergencia && dados.telefoneDeEmergencia.trim() !== ''
+      ? dados.telefoneDeEmergencia
+      : null;
 
+    // Inserção do cliente
     const [resultadoCliente] = await conexao.execute(
       `INSERT INTO clientes (
          nome, cpf, dataDeNascimento,
@@ -35,7 +47,7 @@ export async function cadastrarCliente(dados) {
         dados.dataDeNascimento ?? null,
         dados.email ?? null,
         dados.telefone ?? null,
-        dados.telefoneDeEmergencia ?? null,
+        telefoneEmergenciaTratado,
         dados.restricoesMedicas ?? null,
         dados.peso ?? null,
         dados.altura ?? null,
@@ -50,8 +62,13 @@ export async function cadastrarCliente(dados) {
     await conexao.commit();
     console.log("Cliente cadastrado com sucesso.");
     return resultadoCliente;
+
   } catch (erro) {
-    await conexao.rollback();
+    try {
+      await conexao.rollback();
+    } catch (rollbackErro) {
+      console.error("Erro ao tentar rollback:", rollbackErro.message);
+    }
     console.error("Erro ao cadastrar cliente:", erro.message);
     throw erro;
   } finally {

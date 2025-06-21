@@ -37,10 +37,6 @@ export function validarCliente(dados) {
   erros.push("Telefone de emergência é obrigatório.");
   }
 
-  if (!dados.restricoesMedicas || dados.restricoesMedicas.trim().length === 0) {
-    erros.push("Restrições médicas são obrigatórias. Caso não tenha, escreva 'Nenhuma'.");
-  }
-
   return erros;
 }
 
