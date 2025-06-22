@@ -92,8 +92,8 @@ routerMarca.post('/', async (req, res) => {
         return res.status(400).json({ status: 'error', mensagem: nomeValido.mensagem });
     }
 
-    await adicionarMarca(nome);
-    return res.status(201).json({ status: 'success', mensagem: 'Marca cadastrada com sucesso!' });
+    const resultado = await adicionarMarca(nome);
+    return res.status(201).json({ status: 'success', mensagem: 'Marca cadastrada com sucesso!', id: resultado.insertId });
 });
 
 routerMarca.get('/', async (req, res) => {
