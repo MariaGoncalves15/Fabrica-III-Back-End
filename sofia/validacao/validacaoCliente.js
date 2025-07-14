@@ -3,8 +3,7 @@ function dataValida(dataStr) {
   return !isNaN(data.getTime()) && dataStr.length >= 8;
 }
 
-export function validarCliente(dados) {
-  console.log("Validando telefoneDeEmergencia:", dados.telefoneDeEmergencia);
+function validarCliente(dados) {
   const erros = [];
 
   if (!dados.nome || dados.nome.trim().length < 3) {
@@ -34,13 +33,17 @@ export function validarCliente(dados) {
   }
 
   if (!dados.telefoneDeEmergencia) {
-  erros.push("Telefone de emergência é obrigatório.");
+    erros.push("Telefone de emergência é obrigatório.");
+  }
+
+  if (!dados.restricoesMedicas) {
+    erros.push("Restrições médicas são obrigatórias. Caso não tenha, escreva 'Nenhuma'.");
   }
 
   return erros;
 }
 
-export function validarAtualizacaoCliente(dados = {}) {
+function validarAtualizacaoCliente(dados = {}) {
   const erros = [];
 
   if (dados.nome && dados.nome.trim().length < 3) {
@@ -73,3 +76,8 @@ export function validarAtualizacaoCliente(dados = {}) {
 
   return erros;
 }
+
+export {
+  validarCliente,
+  validarAtualizacaoCliente
+};

@@ -167,13 +167,11 @@ routerCliente.get('/:id/fotoPerfil', async (req, res) => {
   }
 });
 
-
 routerCliente.post('/', upload.fields([
   { name: 'fotoPerfil', maxCount: 1 }
 ]), async (req, res) => {
   // #swagger.tags = ['Clientes']
   // #swagger.description = 'Cadastra um novo cliente.'
-  console.log("AQUI")
 
   try {
     const {
@@ -196,7 +194,11 @@ routerCliente.post('/', upload.fields([
 
     const fotoPerfilBuffer = req.files?.fotoPerfil?.[0]?.buffer;
 
-    // Estrutura similar à do funcionário
+    const endereco = {};
+    if (cep) endereco.cep = cep;
+    if (numeroCasa) endereco.numeroCasa = numeroCasa;
+    if (complemento) endereco.complemento = complemento;
+
     const dados = {
       nome,
       senha,
@@ -207,20 +209,20 @@ routerCliente.post('/', upload.fields([
       telefoneDeEmergencia,
       restricoesMedicas,
       fotoPerfil: fotoPerfilBuffer,
-      endereco: {
-        cep,
-        numeroCasa,
-        complemento
-      },
       peso,
       altura,
       sexo,
       objetivo
     };
 
+    if (Object.keys(endereco).length > 0) {
+      dados.endereco = endereco;
+    }
+
     // Validação
     const erros = validarCliente(dados);
     if (erros.length > 0) {
+      console.log('Erros de validação:', erros); // DEBUG
       return res.status(400).json({ mensagem: 'Erro de validação', erros });
     }
 
@@ -238,6 +240,7 @@ routerCliente.post('/', upload.fields([
     res.status(500).json({ mensagem: 'Erro ao cadastrar cliente.' });
   }
 });
+
 
 
 routerCliente.delete('/:id', async (req, res) => {

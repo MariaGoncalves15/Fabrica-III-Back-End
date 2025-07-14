@@ -25,7 +25,7 @@ export async function cadastrarCliente(dados) {
     const [resultadoCliente] = await conexao.execute(
       `INSERT INTO clientes (
         nome, senha, cpf, dataDeNascimento, email, telefone,
-        telefoneDeEmergencia, restricoesMedicas, fotoPerfil,
+        contatoDeEmergencia, restricoes, fotoPerfil,
         endereco_idendereco, peso, altura, sexo, objetivo
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -35,8 +35,8 @@ export async function cadastrarCliente(dados) {
         dados.dataDeNascimento || null,
         dados.email || null,
         dados.telefone || null,
-        dados.telefoneDeEmergencia || null,
-        dados.restricoesMedicas || null,
+        dados.contatoDeEmergencia || null,
+        dados.restricoes || null,
         dados.fotoPerfil || null,
         enderecoId,
         dados.peso || null,
