@@ -6,7 +6,8 @@ const routerCliente = express.Router();
 import { cadastrarCliente } from '../servico/adicionar.js';
 import {
   retornaClientes,
-  retornaClientesPorNome
+  retornaClientesPorNome,
+  retornaClientePorId
 } from '../servico/buscar.js';
 
 import { deletarClientePorId } from '../servico/deletar.js';
@@ -141,7 +142,8 @@ routerCliente.get('/', async (req, res) => {
 routerCliente.get('/:id', async (req, res) => {
   const id = req.params.id;
   try {
-    const cliente = await retornaClientePorid(id);
+    const cliente = await retornaClientePorId(id);
+    console.log(cliente)
     if (!cliente) {
       return res.status(404).json({ mensagem: 'Cliente não encontrado para o ID informado.' });
     }

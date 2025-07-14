@@ -39,6 +39,7 @@ authRoutesClientes.post("/login", async (req, res) => {
     const { email, senha } = req.body;
 
     const [results] = await pool.query("SELECT * FROM clientes WHERE email = ?", [email]);
+    console.log(results)
 
     if (results.length === 0) {
       return res.status(401).json({ error: "Usuário ou senha incorretos." });
@@ -46,7 +47,7 @@ authRoutesClientes.post("/login", async (req, res) => {
 
     const usuario = results[0];
 
-    const senhaValida = await senha === usuario.senha ? true : false;
+    const senhaValida = await senha === usuario.senha;
     if (!senhaValida) {
       return res.status(401).json({ error: "Usuário ou senha incorretos." });
     }

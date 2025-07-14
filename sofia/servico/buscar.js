@@ -50,12 +50,12 @@ export async function retornaClientesPorNome(nome) {
 }
 
 export async function retornaClientePorId(id) {
-	const [rows] = await pool.execute(
+	const conexao = await pool.getConnection();
+	const query =
 		`SELECT * FROM clientes
 		 JOIN endereco ON clientes.endereco_idendereco = endereco.idendereco
-		 WHERE clientes.idclientes = ?`,
-		[id]
-	);
-
-	return rows;
+		 WHERE clientes.idclientes = ${id}`;
+	const resultado = await executaQuery(conexao, query);
+	conexao.release();
+	return resultado;
 }
