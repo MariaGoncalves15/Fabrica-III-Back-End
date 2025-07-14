@@ -168,9 +168,12 @@ routerCliente.get('/:id/fotoPerfil', async (req, res) => {
 });
 
 
-routerCliente.post('/', upload.single('fotoPerfil'), async (req, res) => {
+routerCliente.post('/', upload.fields([
+  { name: 'fotoPerfil', maxCount: 1 }
+]), async (req, res) => {
   // #swagger.tags = ['Clientes']
   // #swagger.description = 'Cadastra um novo cliente.'
+  console.log("AQUI")
 
   try {
     const {
@@ -191,8 +194,9 @@ routerCliente.post('/', upload.single('fotoPerfil'), async (req, res) => {
       objetivo
     } = req.body;
 
-    const fotoPerfilBuffer = req.file?.buffer || null;
+    const fotoPerfilBuffer = req.files?.fotoPerfil?.[0]?.buffer;
 
+    // Estrutura similar à do funcionário
     const dados = {
       nome,
       senha,
@@ -214,13 +218,14 @@ routerCliente.post('/', upload.single('fotoPerfil'), async (req, res) => {
       objetivo
     };
 
-    // ✅ Validação antes de salvar
+    // Validação
     const erros = validarCliente(dados);
     if (erros.length > 0) {
       return res.status(400).json({ mensagem: 'Erro de validação', erros });
     }
 
-    // ✅ Salva no banco
+    // Salva no banco
+    console.log("Dados que serão cadastrados:", dados);
     const resultado = await cadastrarCliente(dados);
 
     res.status(201).json({

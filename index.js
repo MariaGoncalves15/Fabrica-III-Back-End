@@ -73,6 +73,7 @@ app.use(express.json());
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use(express.urlencoded({ extended: true }));
 
 
 import routerEndereco from './ana/rotas/endereco.js';
@@ -92,6 +93,7 @@ app.use('/endereco', routerEndereco);
 app.use('/frequencia', routerFrequencia);
 app.use('/formacao', routerFormacao);
 app.use('/marca', routerMarca);
+console.log('routerCliente importado');
 app.use('/cliente', routerCliente);
 app.use('/equipamentos', routerEquipamentos);
 app.use('/exercicios', routerExercicios);
