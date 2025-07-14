@@ -168,58 +168,36 @@ routerCliente.get('/:id/fotoPerfil', async (req, res) => {
 });
 
 
-routerCliente.post('/', upload.fields([
-  { name: 'fotoPerfil', maxCount: 1 }
-]), async (req, res) => {
-  console.log("BODY COMPLETO:", req.body);
-
-  const {
-    nome, senha, cpf, dataDeNascimento, email, telefone,
-    telefoneDeEmergencia, restricoesMedicas,
-    cep, numeroCasa, complemento,
-    peso, altura, sexo, objetivo
-  } = req.body;
-
-  const fotoPerfilBuffer = req.files?.fotoPerfil?.[0]?.buffer;
-
-  const dados = {
-    nome,
-    senha,
-    cpf,
-    dataDeNascimento,
-    email,
-    telefone,
-    telefoneDeEmergencia,
-    restricoesMedicas,
-    fotoPerfil: fotoPerfilBuffer,
-    peso,
-    altura,
-    sexo,
-    objetivo,
-    endereco: {
-      cep,
-      numeroCasa,
-      complemento
-    }
-  };
-
-  const erros = validarCliente(dados);
-
-  if (erros.length > 0) {
-    console.log("Erros de validação:", erros);
-    return res.status(400).json({ mensagem: "Erro de validação", erros });
-  }
-
+routerCliente.post('/', upload.single('fotoPerfil'), async (req, res) => {
   try {
-    const resultado = await cadastrarCliente(dados);
-    console.log("Cliente cadastrado com sucesso."); // confirma cadastro no servidor
-    res.status(201).json({
-      mensagem: 'Cliente cadastrado com sucesso',
-      id: resultado.insertId
-    });
+    console.log('🔥 Requisição recebida:', req.body);
+
+    const dados = {
+      nome: req.body.nome,
+      cpf: req.body.cpf,
+      dataDeNascimento: req.body.dataDeNascimento,
+      email: req.body.email,
+      telefone: req.body.telefone,
+      telefoneDeEmergencia: req.body.telefoneDeEmergencia,
+      restricoesMedicas: req.body.restricoesMedicas,
+      senha: req.body.senha,
+      fotoPerfil: req.file?.buffer || null,
+      endereco: {
+        cep: req.body.cep,
+        numeroCasa: req.body.numeroCasa,
+        complemento: req.body.complemento
+      },
+      peso: req.body.peso,
+      altura: req.body.altura,
+      sexo: req.body.sexo,
+      objetivo: req.body.objetivo
+    };
+
+    const cliente = await cadastrarCliente(dados);
+    res.status(201).json({ mensagem: 'Cliente cadastrado com sucesso', cliente });
   } catch (erro) {
-    console.error("Erro ao cadastrar cliente:", erro);
-    res.status(500).json({ erro: 'Erro ao cadastrar cliente' });
+    console.error('Erro na rota POST /api/cliente:', erro);
+    res.status(500).json({ mensagem: 'Erro ao cadastrar cliente.' });
   }
 });
 
