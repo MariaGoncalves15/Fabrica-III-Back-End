@@ -3,7 +3,7 @@ import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const routerCliente = express.Router();
-import { cadastrarCliente } from '../servico/adicionarJson.js';
+import { cadastrarCliente } from '../servico/adicionar.js';
 import {
   retornaClientes,
   retornaClientesPorNome
@@ -169,32 +169,65 @@ routerCliente.get('/:id/fotoPerfil', async (req, res) => {
 
 
 routerCliente.post('/', upload.single('fotoPerfil'), async (req, res) => {
+  // #swagger.tags = ['Clientes']
+  // #swagger.description = 'Cadastra um novo cliente.'
+
   try {
-    console.log('🔥 Requisição recebida:', req.body);
+    const {
+      nome,
+      senha,
+      cpf,
+      dataDeNascimento,
+      email,
+      telefone,
+      telefoneDeEmergencia,
+      restricoesMedicas,
+      cep,
+      numeroCasa,
+      complemento,
+      peso,
+      altura,
+      sexo,
+      objetivo
+    } = req.body;
+
+    const fotoPerfilBuffer = req.file?.buffer || null;
 
     const dados = {
-      nome: req.body.nome,
-      cpf: req.body.cpf,
-      dataDeNascimento: req.body.dataDeNascimento,
-      email: req.body.email,
-      telefone: req.body.telefone,
-      telefoneDeEmergencia: req.body.telefoneDeEmergencia,
-      restricoesMedicas: req.body.restricoesMedicas,
-      senha: req.body.senha,
-      fotoPerfil: req.file?.buffer || null,
+      nome,
+      senha,
+      cpf,
+      dataDeNascimento,
+      email,
+      telefone,
+      telefoneDeEmergencia,
+      restricoesMedicas,
+      fotoPerfil: fotoPerfilBuffer,
       endereco: {
-        cep: req.body.cep,
-        numeroCasa: req.body.numeroCasa,
-        complemento: req.body.complemento
+        cep,
+        numeroCasa,
+        complemento
       },
-      peso: req.body.peso,
-      altura: req.body.altura,
-      sexo: req.body.sexo,
-      objetivo: req.body.objetivo
+      peso,
+      altura,
+      sexo,
+      objetivo
     };
 
-    const cliente = await cadastrarCliente(dados);
-    res.status(201).json({ mensagem: 'Cliente cadastrado com sucesso', cliente });
+    // ✅ Validação antes de salvar
+    const erros = validarCliente(dados);
+    if (erros.length > 0) {
+      return res.status(400).json({ mensagem: 'Erro de validação', erros });
+    }
+
+    // ✅ Salva no banco
+    const resultado = await cadastrarCliente(dados);
+
+    res.status(201).json({
+      mensagem: 'Cliente cadastrado com sucesso',
+      id: resultado.insertId
+    });
+
   } catch (erro) {
     console.error('Erro na rota POST /api/cliente:', erro);
     res.status(500).json({ mensagem: 'Erro ao cadastrar cliente.' });
