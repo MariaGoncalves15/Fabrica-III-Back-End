@@ -58,21 +58,21 @@ authRoutesFuncionarios.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 86400000,
       sameSite: "Strict"
     });
 
     res.cookie("id", usuario.idfuncionarios, {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,
     });
 
     res.cookie("userType", 'Funcionario', {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,
     });
@@ -93,17 +93,17 @@ authRoutesFuncionarios.post("/logout", (req, res) => {
   } */
   res.clearCookie("token", {
     httpOnly: false,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
   res.clearCookie("id", {
     httpOnly: false,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
   res.clearCookie("userType", {
     httpOnly: false,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
 

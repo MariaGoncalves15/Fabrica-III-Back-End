@@ -60,21 +60,21 @@ authRoutesClientes.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 86400000,
       sameSite: "Strict"
     });
 
     res.cookie("id", usuario.idclientes, {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,
     });
 
     res.cookie("userType", 'Cliente', {
       httpOnly: false,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
       maxAge: 86400000,
     });
@@ -95,17 +95,17 @@ authRoutesClientes.post("/logout", (req, res) => {
   } */
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
   res.clearCookie("id", {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
   res.clearCookie("userType", {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: "lax"
   });
 
