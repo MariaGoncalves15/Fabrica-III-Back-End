@@ -60,7 +60,7 @@ app.use(cors({
             callback(new Error('Not allowed by CORS')); // Bloqueia
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));

@@ -66,12 +66,12 @@ function validarAtualizacaoCliente(dados = {}) {
     erros.push("Email deve ser válido.");
   }
 
-  if (!dados.telefoneDeEmergencia) {
-    erros.push("Telefone de emergência é obrigatório.");
+  if (dados.telefoneDeEmergencia && dados.telefoneDeEmergencia.trim().length === 0) {
+    erros.push("Telefone de emergência não pode estar vazio.");
   }
 
-  if (!dados.restricoesMedicas) {
-    erros.push("Restrições médicas são obrigatórias. Caso não tenha, escreva 'Nenhuma'.");
+  if (dados.restricoesMedicas && dados.restricoesMedicas.trim().length === 0) {
+    erros.push("Restrições médicas não podem estar vazias. Escreva 'Nenhuma' se não houver.");
   }
 
   return erros;
