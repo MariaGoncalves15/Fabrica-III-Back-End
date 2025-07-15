@@ -52,7 +52,7 @@ authRoutesFuncionarios.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       { id: usuario.idfuncionarios, email: usuario.email },
-      'tokenParaLogin',
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 

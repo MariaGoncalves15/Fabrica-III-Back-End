@@ -54,7 +54,7 @@ authRoutesClientes.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       { id: usuario.idclientes, email: usuario.email },
-      'tokenParaLogin',
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
