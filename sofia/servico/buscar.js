@@ -53,7 +53,7 @@ export async function retornaClientePorId(id) {
 	const conexao = await pool.getConnection();
 	const query =
 		`SELECT * FROM clientes
-		 JOIN endereco ON clientes.endereco_idendereco = endereco.idendereco
+		 INNER JOIN endereco ON clientes.endereco_idendereco = endereco.idendereco
 		 WHERE clientes.idclientes = ${id}`;
 	const resultado = await executaQuery(conexao, query);
 	conexao.release();
@@ -61,14 +61,14 @@ export async function retornaClientePorId(id) {
 }
 
 export async function buscarFotoPerfilPorId(id) {
-  const conexao = await pool.getConnection();
-  try {
-    const [resultado] = await conexao.execute(
-      'SELECT fotoPerfil FROM clientes WHERE idclientes = ?',
-      [id]
-    );
-    return resultado.length > 0 ? resultado[0] : null;
-  } finally {
-    conexao.release();
-  }
+	const conexao = await pool.getConnection();
+	try {
+		const [resultado] = await conexao.execute(
+			'SELECT fotoPerfil FROM clientes WHERE idclientes = ?',
+			[id]
+		);
+		return resultado.length > 0 ? resultado[0] : null;
+	} finally {
+		conexao.release();
+	}
 }
