@@ -7,7 +7,8 @@ import { cadastrarCliente } from '../servico/adicionar.js';
 import {
   retornaClientes,
   retornaClientesPorNome,
-  retornaClientePorId
+  retornaClientePorId,
+  buscarFotoPerfilPorId
 } from '../servico/buscar.js';
 
 import { deletarClientePorId } from '../servico/deletar.js';

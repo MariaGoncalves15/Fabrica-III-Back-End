@@ -59,3 +59,16 @@ export async function retornaClientePorId(id) {
 	conexao.release();
 	return resultado;
 }
+
+export async function buscarFotoPerfilPorId(id) {
+  const conexao = await pool.getConnection();
+  try {
+    const [resultado] = await conexao.execute(
+      'SELECT fotoPerfil FROM clientes WHERE idclientes = ?',
+      [id]
+    );
+    return resultado.length > 0 ? resultado[0] : null;
+  } finally {
+    conexao.release();
+  }
+}
